@@ -82,7 +82,7 @@ class Adels:
                 "max_name_length": 8
             }
             try:
-                response = requests.post(url, headers=headers, json=data, verify=True)
+                response = requests.post(url, headers=headers, json=data, verify=False)
                 if 'email' in response.json():
                     self.email = response.json()['email']
                     print('[2] Creating Email')
