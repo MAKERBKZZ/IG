@@ -78,7 +78,7 @@ class Adels:
                 'Content-Type': 'application/json'
             }
             data = {
-                "min_name_length": 7,
+                "min_name_length": 4,
                 "max_name_length": 10
             }
             try:
