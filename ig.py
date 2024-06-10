@@ -7,18 +7,18 @@ from fake_useragent import UserAgent
 
 requests.packages.urllib3.disable_warnings()
 
-class Fidra:
+class Adels:
     def __init__(self):
         with open("username.txt", "r") as file:
             self.names = [line.strip() for line in file] 
         self.start_time = sleper.time()
         self.time = int(datetime.now().timestamp())
         self.numbers = '123456789'
-        self.chars = 'qwertyuiopasdfghjklzxcvbnm1234567890'
+        self.chars = 'Dzz1qwertyuiopasdfghjklzxcvbnm1234567890'
         self.length = random.randint(6, 8)
         self.created = 0
-        self.status = None
-        self.password = ''.join(random.choice(ascii_letters + digits) for _ in range(random.randint(8, 15)))
+        self.status = True
+        self.password = ''.join(random.choice(ascii_letters + digits) for _ in range(random.randint(7, 15)))
         self.app_id = str("".join(random.choice(self.numbers) for i in range(15)))
         self.year = random.randint(1990, 1999)
         self.month = random.randint(1, 12)
@@ -55,7 +55,7 @@ class Fidra:
             headers = {
                 'User-Agent': self.ua.random,
                 'X-IG-App-ID': f'{self.app_id}',
-                'referer': 'https://www.instagram.com/',
+                'Origin': 'https://www.instagram.com/',
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Cookie': f'csrftoken={self.csrftoken}; ig_did={self.ig_did}; ig_nrcb=1; mid={self.mid}',
                 'X-CSRFToken': f'{self.csrftoken}'
@@ -72,62 +72,14 @@ class Fidra:
 
     def create_email(self):
         if self.check_username():
-            url = 'https://luxusmail.org/livewire/message/frontend.app'
+            url = 'https://api.internal.temp-mail.io/api/v3/email/new'
             headers = {
                 'User-Agent': self.ua.random,
                 'Content-Type': 'application/json'
             }
-            
-            domains = ['luxusmail.my.id', 'miramail.my.id', 'ish.my.id', 'highmail.my.id', 'whatisakillowatt.com', 'amik.pro']
-            random_domain = random.choice(domains)
-            
             data = {
-                "fingerprint": {
-                    "id": "Sm8UsTrXynqAadXZL9mT",
-                    "name": "frontend.app",
-                    "locale": "en",
-                    "path": "/",
-                    "method": "GET",
-                    "v": "acj"
-                },
-                "serverMemo": {
-                    "children": {
-                        "l1910240968-0": {
-                            "id": "ntdfebb7ERKaOGY5oSvW",
-                            "tag": "main"
-                        }
-                    },
-                    "errors": [],
-                    "htmlHash": "df09fec3",
-                    "data": {
-                        "messages": [],
-                        "deleted": [],
-                        "error": "",
-                        "email": None,
-                        "initial": False,
-                        "overflow": False
-                    },
-                    "dataMeta": [],
-                    "checksum": "7dfec930cd7f2f3915105222914b903895ce1d0a1a28fe85271a5356a37fddc7"
-                },
-                "updates": [
-                    {
-                        "type": "fireEvent",
-                        "payload": {
-                            "id": "2yhx",
-                            "event": "syncEmail",
-                            "params": [f"{self.username}@{random_domain}"]
-                        }
-                    },
-                    {
-                        "type": "fireEvent",
-                        "payload": {
-                            "id": "w0e1l",
-                            "event": "fetchMessages",
-                            "params": []
-                        }
-                    }
-                ]
+                "min_name_length": 7,
+                "max_name_length": 10
             }
             try:
                 response = requests.post(url, headers=headers, json=data, verify=True)
@@ -143,6 +95,26 @@ class Fidra:
         else:
             print('Missing Cookies')
 
+    def check_birthday(self):
+        if self.create_email():
+            url = 'https://www.instagram.com/web/consent/check_age_eligibility/'
+            data = f'day={self.day}&month={self.month}&year={self.year}'
+            headers = {
+                'User-Agent': self.ua.random,
+                'X-IG-App-ID': f'{self.app_id}',
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Origin': 'https://www.instagram.com/',
+                'Cookie': f'csrftoken={self.csrftoken}; ig_did={self.ig_did}; ig_nrcb=1; mid={self.mid}',
+                'X-CSRFToken': f'{self.csrftoken}'
+            }
+            check = requests.post(url, headers=headers, data=data)
+            if '"status":"ok"' in check.text:
+                return True
+            else:
+                return False
+        else:
+            print('Email Not Created')
+
     def retry_send_code(self, email):
         url = 'https://i.instagram.com/api/v1/accounts/send_verify_email/'
         data = f'device_id=&email={email}'
@@ -153,7 +125,7 @@ class Fidra:
             'Cookie': f'csrftoken={self.csrftoken}; ig_did={self.ig_did}; ig_nrcb=1; mid={self.mid}',
             'X-CSRFToken': f'{self.csrftoken}',
             'User-Agent': self.ua.random,
-            'referer': 'https://www.instagram.com/'
+            'Origin': 'https://www.instagram.com/'
         }
         requests.post(url, headers=headers, data=data)
 
@@ -162,7 +134,7 @@ class Fidra:
         headers = {
             'User-Agent': self.ua.random,
             'X-IG-App-ID': f'{self.app_id}',
-            'referer': 'https://www.instagram.com/'
+            'Origin': 'https://www.instagram.com/'
         }
         response = requests.get(url, headers=headers)
         if 'id' in response.text:
@@ -171,9 +143,9 @@ class Fidra:
             return 'Suspend'
 
     def save_info(self, account, session):
-        with open('fidra-accounts.txt', 'a') as f:
+        with open('Adels-accounts.txt', 'a') as f:
             f.write(f'{account}\n')
-        with open('fidra-sessions.txt', 'a') as s:
+        with open('Adels-sessions.txt', 'a') as s:
             s.write(f'session:{session}\n')
 
     def send_code(self):
@@ -184,7 +156,7 @@ class Fidra:
                 'User-Agent': self.ua.random,
                 'X-IG-App-ID': f'{self.app_id}',
                 'x-requested-with': 'XMLHttpRequest',
-                'referer': 'https://www.instagram.com/',
+                'Origin': 'https://www.instagram.com/',
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Cookie': f'csrftoken={self.csrftoken}; ig_did={self.ig_did}; ig_nrcb=1; mid={self.mid}',
                 'X-CSRFToken': f'{self.csrftoken}'
@@ -231,7 +203,7 @@ class Fidra:
                 'User-Agent': self.ua.random,
                 'X-IG-App-ID': f'{self.app_id}',
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'referer': 'https://www.instagram.com/',
+                'Origin': 'https://www.instagram.com/',
                 'Cookie': f'csrftoken={self.csrftoken}; ig_did={self.ig_did}; ig_nrcb=1; mid={self.mid}',
                 'X-CSRFToken': f'{self.csrftoken}',
 
@@ -249,14 +221,14 @@ class Fidra:
             print('[6] Creating Account')
             url = 'https://www.instagram.com/accounts/web_create_ajax/'
             time = int(datetime.now().timestamp())
-            data = f'enc_password=#PWD_INSTAGRAM_BROWSER:0:{time}:{self.password}&email={self.email}&username={self.username}&first_name=Created By Fidra\n&month={self.month}&day={self.day}&year={self.year}&client_id=&seamless_login_enabled=1&tos_version=row&force_sign_up_code={self.signup_code}'
+            data = f'enc_password=#PWD_INSTAGRAM_BROWSER:0:{time}:{self.password}&email={self.email}&username={self.username}&first_name=Created By Adels\n&month={self.month}&day={self.day}&year={self.year}&client_id=&seamless_login_enabled=1&tos_version=row&force_sign_up_code={self.signup_code}'
             headers = {
                 'User-Agent': self.ua.random,
                 'X-IG-App-ID': f'{self.app_id}',
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Cookie': f'csrftoken={self.csrftoken}; ig_did={self.ig_did}; ig_nrcb=1; mid={self.mid}',
                 'X-CSRFToken': f'{self.csrftoken}',
-                'referer': 'https://www.instagram.com/'
+                'Origin': 'https://www.instagram.com/'
             }
             response = requests.post(url, headers=headers, data=data)
             if 'user_id' in response.text:
@@ -269,7 +241,7 @@ class Fidra:
                 print(f'email : {self.email}')
                 print(f'Account Status : {self.account_status(self.username)}')
                 print(f'The process took {self.elapsed_time} seconds')
-                print('Account saved in "fidra-accounts.txt"')
+                print('Account saved in "Adels-accounts.txt"')
                 print('-' * 40)
                 session = response.cookies['sessionid']
                 account = f'{self.username}:{self.password}'
@@ -298,10 +270,10 @@ Instagram Accounts Creator v1.0
 Powered By @f09l
 """)
 
-fidra = Fidra()
+Adels = Adels()
 try:
     count = int(input('accounts count : '))
 except:
-    count = 0
+    count = 1
 for _ in range(count):
-    fidra.create_account()
+    Adels.create_account()
