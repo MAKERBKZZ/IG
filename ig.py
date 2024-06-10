@@ -74,7 +74,7 @@ class Adels:
         if self.check_username():
             url = 'https://api.internal.temp-mail.io/api/v3/email/new'
             headers = {
-                'User-Agent': self.ua.random,
+                'User-Agent': 'Temp%20Mail/30 CFNetwork/1220.1 Darwin/20.3.0',
                 'Content-Type': 'application/json'
             }
             data = {
