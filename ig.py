@@ -17,12 +17,12 @@ class Fidra:
         self.chars = 'qwertyuiopasdfghjklzxcvbnm1234567890'
         self.length = random.randint(6, 8)
         self.created = 0
-        self.status = None
+        self.status = True
         self.password = ''.join(random.choice(ascii_letters + digits) for _ in range(random.randint(8, 14)))
         self.app_id = str("".join(random.choice(self.numbers) for i in range(15)))
         self.year = random.randint(1990, 1999)
         self.month = random.randint(1, 12)
-        self.day = random.randint(1, 20)
+        self.day = random.randint(1, 19)
         self.ig_did = str(uuid4()).upper()
         self.ua = UserAgent()
 
