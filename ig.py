@@ -7,7 +7,7 @@ from fake_useragent import UserAgent
 
 requests.packages.urllib3.disable_warnings()
 
-class Fidra:
+class Adels:
     def __init__(self):
         with open("username.txt", "r") as file:
             self.names = [line.strip() for line in file] 
@@ -17,12 +17,12 @@ class Fidra:
         self.chars = 'qwertyuiopasdfghjklzxcvbnm1234567890'
         self.length = random.randint(6, 8)
         self.created = 0
-        self.status = None
-        self.password = ''.join(random.choice(ascii_letters + digits) for _ in range(random.randint(8, 14)))
+        self.status = True
+        self.password = ''.join(random.choice(ascii_letters + digits) for _ in range(random.randint(7, 15)))
         self.app_id = str("".join(random.choice(self.numbers) for i in range(15)))
         self.year = random.randint(1990, 1999)
         self.month = random.randint(1, 12)
-        self.day = random.randint(1, 20)
+        self.day = random.randint(1, 29)
         self.ig_did = str(uuid4()).upper()
         self.ua = UserAgent()
 
@@ -79,7 +79,7 @@ class Fidra:
             }
             data = {
                 "min_name_length": 5,
-                "max_name_length": 7
+                "max_name_length": 10
             }
             try:
                 response = requests.post(url, headers=headers, json=data, verify=True)
@@ -143,9 +143,9 @@ class Fidra:
             return 'Suspend'
 
     def save_info(self, account, session):
-        with open('fidra-accounts.txt', 'a') as f:
+        with open('Adels-accounts.txt', 'a') as f:
             f.write(f'{account}\n')
-        with open('fidra-sessions.txt', 'a') as s:
+        with open('Adels-sessions.txt', 'a') as s:
             s.write(f'session:{session}\n')
 
     def send_code(self):
@@ -155,7 +155,6 @@ class Fidra:
             headers = {
                 'User-Agent': self.ua.random,
                 'X-IG-App-ID': f'{self.app_id}',
-                'x-requested-with': 'XMLHttpRequest',
                 'referer': 'https://www.instagram.com/',
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Cookie': f'csrftoken={self.csrftoken}; ig_did={self.ig_did}; ig_nrcb=1; mid={self.mid}',
@@ -221,7 +220,7 @@ class Fidra:
             print('[6] Creating Account')
             url = 'https://www.instagram.com/accounts/web_create_ajax/'
             time = int(datetime.now().timestamp())
-            data = f'enc_password=#PWD_INSTAGRAM_BROWSER:0:{time}:{self.password}&email={self.email}&username={self.username}&first_name=Created By Fidra\n&month={self.month}&day={self.day}&year={self.year}&client_id=&seamless_login_enabled=1&tos_version=row&force_sign_up_code={self.signup_code}'
+            data = f'enc_password=#PWD_INSTAGRAM_BROWSER:0:{time}:{self.password}&email={self.email}&username={self.username}&first_name=Created By Adels\n&month={self.month}&day={self.day}&year={self.year}&client_id=&seamless_login_enabled=1&tos_version=row&force_sign_up_code={self.signup_code}'
             headers = {
                 'User-Agent': self.ua.random,
                 'X-IG-App-ID': f'{self.app_id}',
@@ -241,7 +240,7 @@ class Fidra:
                 print(f'email : {self.email}')
                 print(f'Account Status : {self.account_status(self.username)}')
                 print(f'The process took {self.elapsed_time} seconds')
-                print('Account saved in "fidra-accounts.txt"')
+                print('Account saved in "Adels-accounts.txt"')
                 print('-' * 40)
                 session = response.cookies['sessionid']
                 account = f'{self.username}:{self.password}'
@@ -270,10 +269,10 @@ Instagram Accounts Creator v1.0
 Powered By @f09l
 """)
 
-fidra = Fidra()
+Adels = Adels()
 try:
     count = int(input('accounts count : '))
 except:
     count = 0
 for _ in range(count):
-    fidra.create_account()
+    Adels.create_account()
