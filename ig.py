@@ -79,7 +79,7 @@ class Adels:
             }
             data = {
                 "min_name_length": 4,
-                "max_name_length": 10
+                "max_name_length": 8
             }
             try:
                 response = requests.post(url, headers=headers, json=data, verify=True)
