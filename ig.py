@@ -1,8 +1,4 @@
-import requests
-import random
-import threading
-import json
-import sys
+import requests, random, threading, json, sys
 from string import ascii_letters, digits
 from datetime import datetime
 from uuid import uuid4
@@ -37,8 +33,8 @@ class Fidra:
                 self.id = data['id']
                 self.token = data['token']
                 requests.post(f'https://api.telegram.org/bot{self.token}/sendMessage?chat_id={self.id}&text={message}')
-        except Exception as e:
-            print("Error sending message to bot:", e)
+        except:
+            pass
 
     def set_cookies(self):
         url = 'https://i.instagram.com/api/v1/public/landing_info/'
@@ -93,7 +89,7 @@ class Fidra:
                 else:
                     return False
             except Exception as e:
-                print("Error creating email:", e)
+                print(e)
                 return False
         else:
             print('Missing Cookies')
