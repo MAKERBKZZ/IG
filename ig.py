@@ -18,11 +18,11 @@ class Fidra:
         self.length = random.randint(6, 8)
         self.created = 0
         self.status = None
-        self.password = ''.join(random.choice(ascii_letters + digits) for _ in range(random.randint(8, 14)))
+        self.password = ''.join(random.choice(ascii_letters + digits) for _ in range(random.randint(8, 15)))
         self.app_id = str("".join(random.choice(self.numbers) for i in range(15)))
         self.year = random.randint(1990, 1999)
         self.month = random.randint(1, 12)
-        self.day = random.randint(1, 20)
+        self.day = random.randint(1, 29)
         self.ig_did = str(uuid4()).upper()
         self.ua = UserAgent()
 
@@ -72,14 +72,14 @@ class Fidra:
 
     def create_email(self):
         if self.check_username():
-            url = 'https://api.internal.temp-mail.io/api/v4/email/new'
+            url = 'https://api.internal.temp-mail.io/api/v3/email/new'
             headers = {
                 'User-Agent': self.ua.random,
                 'Content-Type': 'application/json'
             }
             data = {
-                "min_name_length": 5,
-                "max_name_length": 7
+                "min_name_length": 6,
+                "max_name_length": 10
             }
             try:
                 response = requests.post(url, headers=headers, json=data, verify=True)
