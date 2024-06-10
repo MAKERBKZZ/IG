@@ -72,14 +72,62 @@ class Fidra:
 
     def create_email(self):
         if self.check_username():
-            url = 'https://api.internal.temp-mail.io/api/v3/email/new'
+            url = 'https://luxusmail.org/livewire/message/frontend.app'
             headers = {
                 'User-Agent': self.ua.random,
                 'Content-Type': 'application/json'
             }
+            
+            domains = ['luxusmail.my.id', 'miramail.my.id', 'ish.my.id', 'highmail.my.id', 'whatisakillowatt.com', 'amik.pro']
+            random_domain = random.choice(domains)
+            
             data = {
-                "min_name_length": 6,
-                "max_name_length": 10
+                "fingerprint": {
+                    "id": "Sm8UsTrXynqAadXZL9mT",
+                    "name": "frontend.app",
+                    "locale": "en",
+                    "path": "/",
+                    "method": "GET",
+                    "v": "acj"
+                },
+                "serverMemo": {
+                    "children": {
+                        "l1910240968-0": {
+                            "id": "ntdfebb7ERKaOGY5oSvW",
+                            "tag": "main"
+                        }
+                    },
+                    "errors": [],
+                    "htmlHash": "df09fec3",
+                    "data": {
+                        "messages": [],
+                        "deleted": [],
+                        "error": "",
+                        "email": None,
+                        "initial": False,
+                        "overflow": False
+                    },
+                    "dataMeta": [],
+                    "checksum": "7dfec930cd7f2f3915105222914b903895ce1d0a1a28fe85271a5356a37fddc7"
+                },
+                "updates": [
+                    {
+                        "type": "fireEvent",
+                        "payload": {
+                            "id": "2yhx",
+                            "event": "syncEmail",
+                            "params": [f"{self.username}@{random_domain}"]
+                        }
+                    },
+                    {
+                        "type": "fireEvent",
+                        "payload": {
+                            "id": "w0e1l",
+                            "event": "fetchMessages",
+                            "params": []
+                        }
+                    }
+                ]
             }
             try:
                 response = requests.post(url, headers=headers, json=data, verify=True)
@@ -94,26 +142,6 @@ class Fidra:
                 return False
         else:
             print('Missing Cookies')
-
-    def check_birthday(self):
-        if self.create_email():
-            url = 'https://www.instagram.com/web/consent/check_age_eligibility/'
-            data = f'day={self.day}&month={self.month}&year={self.year}'
-            headers = {
-                'User-Agent': self.ua.random,
-                'X-IG-App-ID': f'{self.app_id}',
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'referer': 'https://www.instagram.com/',
-                'Cookie': f'csrftoken={self.csrftoken}; ig_did={self.ig_did}; ig_nrcb=1; mid={self.mid}',
-                'X-CSRFToken': f'{self.csrftoken}'
-            }
-            check = requests.post(url, headers=headers, data=data)
-            if '"status":"ok"' in check.text:
-                return True
-            else:
-                return False
-        else:
-            print('Email Not Created')
 
     def retry_send_code(self, email):
         url = 'https://i.instagram.com/api/v1/accounts/send_verify_email/'
